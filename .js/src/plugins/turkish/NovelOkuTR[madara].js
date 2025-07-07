@@ -20,17 +20,7 @@ class NovelOkuTR {
     const versionIncrement = (config.options?.versionIncrements) || 0;
     this.version = `1.1.${7 + versionIncrement}`;
     this.options = config.options || {};
-    this.filters = config.filters;
-
-    if (this.options?.hasLocked) {
-      this.pluginSettings = {
-        hideLocked: {
-          value: "",
-          label: "Hide locked chapters",
-          type: "Switch",
-        },
-      };
-    }
+    this.filters = undefined; // disable filters
   }
 
   getHostname(url) {
@@ -109,9 +99,6 @@ class NovelOkuTR {
       chapters: [],
     };
 
-    // Detailed parsing remains unchanged — assuming it still works.
-    // Otherwise, you can parse with cheerio as in parseNovels.
-
     return novel;
   }
 
@@ -128,45 +115,4 @@ module.exports = new NovelOkuTR({
   sourceSite: "https://novelokutr.net/",
   sourceName: "NovelOkuTR",
   options: { lang: "Turkish" },
-  filters: {
-    "genre[]": {
-      type: "Checkbox",
-      label: "Genre",
-      value: [],
-      options: [
-        { label: "Aksiyon", value: "aksiyon" },
-        { label: "Bilim Kurgu", value: "bilim-kurgu" },
-        { label: "Büyü", value: "buyu" },
-        { label: "Drama", value: "drama" },
-        { label: "Fantastik", value: "fantastik" },
-        { label: "Isekai", value: "isekai" },
-        { label: "Romantik", value: "romantik" },
-        { label: "Yetişkin", value: "yetiskin" },
-      ],
-    },
-    status: {
-      type: "Picker",
-      label: "Durum",
-      value: "",
-      options: [
-        { label: "Hepsi", value: "" },
-        { label: "Devam Ediyor", value: "ongoing" },
-        { label: "Askıda", value: "hiatus" },
-        { label: "Tamamlanmış", value: "completed" },
-      ],
-    },
-    order: {
-      type: "Picker",
-      label: "Sıralama",
-      value: "",
-      options: [
-        { label: "Varsayılan", value: "" },
-        { label: "A-Z", value: "title" },
-        { label: "Z-A", value: "titlereverse" },
-        { label: "Son Güncelleme", value: "update" },
-        { label: "En Son Eklenen", value: "latest" },
-        { label: "Popüler", value: "popular" },
-      ],
-    },
-  },
 });
