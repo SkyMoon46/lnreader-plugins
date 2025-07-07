@@ -16,7 +16,7 @@ class NovelOkuTR {
     this.id = config.id;
     this.name = config.sourceName;
     this.icon = `multisrc/lightnovelwp/${config.id.toLowerCase()}/icon.png`;
-    this.site = config.sourceSite;
+    this.site = "https://novelokutr.net";
     const versionIncrement = (config.options?.versionIncrements) || 0;
     this.version = `1.1.${7 + versionIncrement}`;
     this.options = config.options || {};
@@ -83,21 +83,8 @@ class NovelOkuTR {
     return novels;
   }
 
-  async popularNovels(page, { filters, showLatestNovels }) {
-    let url = `${this.site}/manga/?m_orderby=${showLatestNovels ? "latest" : "trending"}&page=${page}`;
-
-    filters = filters || this.filters || {};
-
-    for (const key in filters) {
-      const val = filters[key].value;
-      if (typeof val === "object") {
-        val.forEach(v => url += `&${key}=${v}`);
-      } else if (val) {
-        url += `&${key}=${val}`;
-      }
-    }
-
-    const html = await this.safeFecth(url, false);
+  async popularNovels(page, _) {
+    const html = await this.safeFecth(this.site, false);
     return this.parseNovels(html);
   }
 
