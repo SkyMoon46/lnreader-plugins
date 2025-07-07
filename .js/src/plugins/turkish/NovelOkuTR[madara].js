@@ -13,7 +13,7 @@ const novelokutr = new (class {
   constructor() {
     this.id = "novelokutr";
     this.name = "NovelOkuTR";
-    this.site = "https://novelokutr.net/";
+    this.site = "https://novelokutr.net/novel/";
     this.icon = "multisrc/lightnovelwp/novelokutr/icon.png";
     this.version = "1.1.7";
     this.hideLocked = storage.get("hideLocked");
