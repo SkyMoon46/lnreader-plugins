@@ -59,13 +59,19 @@ class NovelOkuTR {
     const novels = [];
     const $ = cheerio.load(html);
 
-    $(".bs").each((_, el) => {
-      const name = $(el).find("a").attr("title");
-      const cover = $(el).find("img").attr("src") || defaultCover;
-      const href = $(el).find("a").attr("href");
-      const path = new URL(href).pathname;
+    $(".page-item-detail").each((_, el) => {
+      const name = $(el).find("h3.h5 > a").text().trim();
+      const cover = $(el).find("img").attr("data-src") || $(el).find("img").attr("src") || defaultCover;
+      const href = $(el).find("h3.h5 > a").attr("href");
+      let path = "";
 
-      if (name && path) {
+      try {
+        path = new URL(href).pathname;
+      } catch (e) {
+        path = href;
+      }
+
+      if (name && path.startsWith("/novel/")) {
         novels.push({ name, cover, path });
       }
     });
@@ -74,12 +80,13 @@ class NovelOkuTR {
   }
 
   async popularNovels(page, _) {
-    const html = await this.safeFecth(this.site, false);
+    const url = `${this.site}/novel/page/${page}`;
+    const html = await this.safeFecth(url, false);
     return this.parseNovels(html);
   }
 
   async searchNovels(searchTerm, page) {
-    const url = `${this.site}/page/${page}/?s=${encodeURIComponent(searchTerm)}`;
+    const url = `${this.site}/?s=${encodeURIComponent(searchTerm)}&post_type=wp-manga&page=${page}`;
     const html = await this.safeFecth(url, true);
     return this.parseNovels(html);
   }
